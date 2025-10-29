@@ -1,5 +1,5 @@
 import type { FastifyTypedInstance } from '../types'
-import { getExercises, getExercise } from '../services/exercises';
+import { getExercises, getExercise } from '../repositories/exercises';
 import z from "zod"
 
 export async function exerciseRoutes(server: FastifyTypedInstance) {
