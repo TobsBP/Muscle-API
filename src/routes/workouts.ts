@@ -3,11 +3,11 @@ import type { FastifyTypedInstance } from '../types'
 import z from "zod"
 
 export async function workoutRoutes(server: FastifyTypedInstance) {
-  server.get('/getWorkouts', {
+  server.get('/workouts', {
     schema: {
       description: 'Get all workouts registred in the db',
       summary: 'Get all workouts',
-      tags: ['workouts'],
+      tags: ['workout'],
       response:{
         200: z.object({
           message: z.unknown()
@@ -29,11 +29,11 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
     }
   });
   
-  server.get('/getWorkout', {
+  server.get('/workout', {
     schema: {
       description: 'Get a single workout by id',
       summary: 'Get a single workout by id',
-      tags: ['workouts'],
+      tags: ['workout'],
       querystring: z.object({
         id: z.number(),
       }),

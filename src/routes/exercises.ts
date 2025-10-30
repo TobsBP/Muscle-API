@@ -3,14 +3,14 @@ import { getExercises, getExercise } from '../repositories/exercises';
 import z from "zod"
 
 export async function exerciseRoutes(server: FastifyTypedInstance) {
-  server.get('/getExercise', {
+  server.get('/exercise', {
     schema: {
       querystring: z.object({
         id: z.number(),
       }),
       description: 'Get a single exercise by id',
       summary: 'Get a single exercise by id',
-      tags: ['exercises'],
+      tags: ['exercise'],
       response: {
         200: z.object({
           message: z.unknown(),
@@ -33,11 +33,11 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
     }
   });
   
-  server.get('/getExercises', {
+  server.get('/exercises', {
     schema: {
       description: 'Get all exercises in the db',
       summary: 'Get all exercises',
-      tags: ['exercises'],
+      tags: ['exercise'],
       response: {
         200: z.object({
           message: z.unknown(),
