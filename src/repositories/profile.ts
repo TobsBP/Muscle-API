@@ -1,13 +1,13 @@
 import { supabase } from "../config/supabase";
 import type { ZodUUID } from "zod";
 
-export async function getPeopleInfos(){
+export const getPeopleInfos = async () => {
   return await supabase
     .from('user_profiles')
     .select('*')
 }
 
-export async function getPersonInfos(id:ZodUUID){
+export const getPersonInfos = async(id:ZodUUID) => {
   return await supabase
     .from('user_profiles')
     .select('*')
