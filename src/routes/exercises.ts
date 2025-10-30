@@ -1,10 +1,12 @@
-import type { FastifyTypedInstance } from '../types'
 import { getExercises, getExercise } from '../repositories/exercises';
+import { authenticateApiKey } from '../middleware/auth';
+import type { FastifyTypedInstance } from '../types'
 import z from "zod"
 
 export async function exerciseRoutes(server: FastifyTypedInstance) {
   server.get('/exercise', {
     schema: {
+      preHandler: authenticateApiKey,
       querystring: z.object({
         id: z.number(),
       }),
@@ -35,6 +37,7 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
   
   server.get('/exercises', {
     schema: {
+      preHandler: authenticateApiKey,
       description: 'Get all exercises in the db',
       summary: 'Get all exercises',
       tags: ['exercise'],
