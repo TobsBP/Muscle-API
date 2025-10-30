@@ -4,9 +4,11 @@ import { userSchema } from "../types/userSchema";
 import { profileSchema } from "../types/profileSchema";
 import { signUp, signIn, createProfile } from "../services/auth";
 import { supabase } from "../config/supabase";
+import { authenticateApiKey } from "../middleware/auth";
 
 export async function authRoutes(app: FastifyInstance) {
   app.post("/registerUser", {
+    preHandler: authenticateApiKey,
     schema: {
       body: userSchema,
       description: 'Register a new user',
@@ -39,6 +41,7 @@ export async function authRoutes(app: FastifyInstance) {
 
   app.post("/login", {
     schema: {
+      preHandler: authenticateApiKey,
       body: z.object({
         email: z.email(),
         password: z.string(),
