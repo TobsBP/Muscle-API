@@ -1,12 +1,12 @@
 import { supabase } from "../config/supabase";
 
-export async function getExercises(){
+export const getExercises = async () => {
   return await supabase
     .from('exercises')
     .select('*')
 }
 
-export async function getExercise(id: number){
+export const getExercise = async (id: number) => {
     return await supabase
     .from('exercises')
     .select('*')
