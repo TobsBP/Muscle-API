@@ -8,7 +8,9 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
       querystring: z.object({
         id: z.number(),
       }),
-      description: 'Get the day exercise based in the id',
+      description: 'Get a single exercise by id',
+      summary: 'Get a single exercise by id',
+      tags: ['exercises'],
       response: {
         200: z.object({
           message: z.unknown(),
@@ -17,7 +19,6 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
           message: z.unknown(),
         }),
       },
-      tags: ['Exercises']
     },
   }, async (request, reply) => {
     try {
@@ -35,6 +36,8 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
   server.get('/getExercises', {
     schema: {
       description: 'Get all exercises in the db',
+      summary: 'Get all exercises',
+      tags: ['exercises'],
       response: {
         200: z.object({
           message: z.unknown(),
@@ -43,7 +46,6 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
           message: z.unknown(),
         }),
       },
-      tags: ['Exercises']
     },
   }, async (request, reply) => {
     try {

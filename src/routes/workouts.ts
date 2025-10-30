@@ -6,6 +6,8 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
   server.get('/getWorkouts', {
     schema: {
       description: 'Get all workouts registred in the db',
+      summary: 'Get all workouts',
+      tags: ['workouts'],
       response:{
         200: z.object({
           message: z.unknown()
@@ -29,7 +31,9 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
   
   server.get('/getWorkout', {
     schema: {
-      description: 'Get all workouts registred in the db',
+      description: 'Get a single workout by id',
+      summary: 'Get a single workout by id',
+      tags: ['workouts'],
       querystring: z.object({
         id: z.number(),
       }),
