@@ -37,17 +37,17 @@ export async function loginHandler(request: FastifyRequest, reply: FastifyReply)
 }
 
 export async function createProfileHandler(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const validatedData = profileSchema.parse(request.body);
-      const data = await createProfile(validatedData, (request.user as any).id);
-      return reply.send(data);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return reply.status(400).send({ issues: error.issues });
-      }
-      if (error instanceof Error) {
-        return reply.status(400).send({ message: error.message });
-      }
-      return reply.status(500).send({ message: "Internal Server Error" });
+  try {
+    const validatedData = profileSchema.parse(request.body);
+    const data = await createProfile(validatedData, (request.user as any).id);
+    return reply.send(data);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return reply.status(400).send({ issues: error.issues });
     }
+    if (error instanceof Error) {
+      return reply.status(400).send({ message: error.message });
+    }
+    return reply.status(500).send({ message: "Internal Server Error" });
+  }
 }
