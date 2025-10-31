@@ -1,7 +1,7 @@
 import { authenticateApiKey } from '../middleware/auth';
-import { getWorkout, getWorkouts } from '../repositories/workouts';
 import type { FastifyTypedInstance } from '../types'
 import z from "zod"
+import { getWorkoutHandler, getWorkoutsHandler, updateWorkoutHandler, deleteWorkoutHandler } from '../controllers/workouts';
 
 export async function workoutRoutes(server: FastifyTypedInstance) {
   server.get('/workouts', {
@@ -19,17 +19,7 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
         }),
       }
     }
-  }, async(request, reply) => {
-    try {
-      const response = await getWorkouts();
-
-      return reply.status(200).send({ message: response });
-    } catch (error) {
-      console.log(error);
-
-      return reply.status(200).send({ message: "Error to fetch" })      
-    }
-  });
+  }, getWorkoutsHandler);
   
   server.get('/workout', {
     schema: {
@@ -49,15 +39,45 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
         }),
       }
     }
-  }, async(request, reply) => {
-    try {
-      const response = await getWorkout(request.query.id);
+  }, getWorkoutHandler);
 
-      return reply.status(200).send({ message: response });
-    } catch (error) {
-      console.log(error);
-
-      return reply.status(200).send({ message: "Error to fetch" })      
+  server.put('/workout/:id', {
+    schema: {
+      preHandler: authenticateApiKey,
+      description: 'Update a workout by id',
+      summary: 'Update a workout by id',
+      tags: ['workout'],
+      params: z.object({
+        id: z.number(),
+      }),
+      response:{
+        200: z.object({
+          message: z.unknown()
+        }),
+        404: z.object({
+          message: z.string()
+        }),
+      }
     }
-  });
+  }, updateWorkoutHandler);
+
+  server.delete('/workout/:id', {
+    schema: {
+      preHandler: authenticateApiKey,
+      description: 'Delete a workout by id',
+      summary: 'Delete a workout by id',
+      tags: ['workout'],
+      params: z.object({
+        id: z.number(),
+      }),
+      response:{
+        200: z.object({
+          message: z.unknown()
+        }),
+        404: z.object({
+          message: z.string()
+        }),
+      }
+    }
+  }, deleteWorkoutHandler);
 }

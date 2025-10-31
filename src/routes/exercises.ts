@@ -1,7 +1,7 @@
-import { getExercises, getExercise } from '../repositories/exercises';
 import { authenticateApiKey } from '../middleware/auth';
 import type { FastifyTypedInstance } from '../types'
 import z from "zod"
+import { getExerciseHandler, getExercisesHandler, updateExerciseHandler, deleteExerciseHandler } from '../controllers/exercises';
 
 export async function exerciseRoutes(server: FastifyTypedInstance) {
   server.get('/exercise', {
@@ -22,18 +22,7 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
         }),
       },
     },
-  }, async (request, reply) => {
-    try {
-      const exercise = await getExercise(request.query.id); 
-
-      return reply.status(200).send({ message: exercise });
-    } catch (error) {
-      
-      console.error("error:", error);
-
-      return reply.status(500).send({ message: "Failed" });
-    }
-  });
+  }, getExerciseHandler);
   
   server.get('/exercises', {
     schema: {
@@ -50,16 +39,45 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
         }),
       },
     },
-  }, async (request, reply) => {
-    try {
-      const exercise = await getExercises(); 
+  }, getExercisesHandler);
 
-      return reply.status(200).send({ message: exercise });
-    } catch (error) {
-      
-      console.error("error:", error);
+  server.put('/exercise/:id', {
+    schema: {
+      preHandler: authenticateApiKey,
+      description: 'Update an exercise by id',
+      summary: 'Update an exercise by id',
+      tags: ['exercise'],
+      params: z.object({
+        id: z.number(),
+      }),
+      response: {
+        200: z.object({
+          message: z.unknown(),
+        }),
+        500: z.object({
+          message: z.unknown(),
+        }),
+      },
+    },
+  }, updateExerciseHandler);
 
-      return reply.status(500).send({ message: "Failed" });
-    }
-  });
+  server.delete('/exercise/:id', {
+    schema: {
+      preHandler: authenticateApiKey,
+      description: 'Delete an exercise by id',
+      summary: 'Delete an exercise by id',
+      tags: ['exercise'],
+      params: z.object({
+        id: z.number(),
+      }),
+      response: {
+        200: z.object({
+          message: z.unknown(),
+        }),
+        500: z.object({
+          message: z.unknown(),
+        }),
+      },
+    },
+  }, deleteExerciseHandler);
 }
