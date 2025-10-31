@@ -26,3 +26,17 @@ export const getWorkouts = async () => {
       )
     `)
 }
+
+export const updateWorkout = async (id: number, workout: any) => {
+    return await supabase
+    .from('daily_workouts')
+    .update(workout)
+    .eq('id', id)
+}
+
+export const deleteWorkout = async (id: number) => {
+    return await supabase
+    .from('daily_workouts')
+    .delete()
+    .eq('id', id)
+}
