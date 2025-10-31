@@ -2,10 +2,14 @@
   "name": "muscle-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "src/server.ts",
   "scripts": {
     "dev": "tsx watch --env-file .env src/server.ts",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+  "engines": {
+    "node": "20"
   },
   "dependencies": {
     "@fastify/cors": "^11.1.0",
