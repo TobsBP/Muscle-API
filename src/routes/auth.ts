@@ -29,7 +29,7 @@ export async function authRoutes(app: FastifyInstance) {
     schema: {
       preHandler: authenticateApiKey,
       body: z.object({
-        email: z.string().email(),
+        email: z.email(),
         password: z.string(),
       }),
       description: 'Login a user',

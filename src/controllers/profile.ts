@@ -3,7 +3,7 @@ import { getUserProfile, getUsersProfiles, updateUserProfile, deleteUserProfile 
 
 export async function getProfileHandler(request: FastifyRequest, reply: FastifyReply) {
   try {
-    const id = (request.params) as string; 
+    const { id } = request.params as { id: string }; 
     const profile = getUserProfile(id) 
 
     return reply.status(200).send({ message: profile });
@@ -15,7 +15,7 @@ export async function getProfileHandler(request: FastifyRequest, reply: FastifyR
   }
 }
 
-export async function getProfilesHandler(reply: FastifyReply) {
+export async function getProfilesHandler(request: FastifyRequest, reply: FastifyReply) {
   try {
     const profiles = await getUsersProfiles(); 
 

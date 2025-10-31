@@ -1,14 +1,14 @@
+import { deleteUserProfileHandler, getProfileHandler, updateProfileHandler, getProfilesHandler } from '../controllers/profile';
 import { authenticateApiKey } from '../middleware/auth'
 import type { FastifyTypedInstance } from '../types'
 import z from 'zod'
-import { getUsersProfiles, updateUserProfile, deleteUserProfile } from '../repositories/profile';
-import { deleteUserProfileHandler, getProfileHandler, updateProfileHandler } from '../controllers/profile';
 
 export async function profileRoutes(server: FastifyTypedInstance) {
   server.get('/userProfile/:id', {
   preHandler: authenticateApiKey,
   schema: {
     description: 'Get the user profile based on the id',
+    summary: 'Get the user profile based on the id',
     params: z.object({
       id: z.string(),
     }),
@@ -28,6 +28,7 @@ export async function profileRoutes(server: FastifyTypedInstance) {
     preHandler: authenticateApiKey,
     schema: {
       description: 'Get all users profiles',
+      summary: 'Get all users profiles',
       response: {
         200: z.object({
           message: z.unknown()
@@ -38,15 +39,7 @@ export async function profileRoutes(server: FastifyTypedInstance) {
       },
       tags: ['profile']
     }
-  }, async (request, reply) => {
-    try {
-      const profile = await getUsersProfiles()
-      
-      return reply.status(200).send({ message: profile })
-    } catch (error) {
-      return reply.status(400).send({ message: 'Error' })
-    }
-  })
+  }, getProfilesHandler)
 
   server.put('/userProfile/:id', {
     preHandler: authenticateApiKey,
