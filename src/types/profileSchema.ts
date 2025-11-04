@@ -2,7 +2,7 @@ import z from 'zod';
 
 export const profileSchema = z.object({
   name: z.string(),
-  age: z.number(),
+  birth_date: z.string(),
   gender: z.string(),
   goal: z.string(),
 });

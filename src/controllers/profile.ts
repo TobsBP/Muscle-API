@@ -4,7 +4,7 @@ import { getUserProfile, getUsersProfiles, updateUserProfile, deleteUserProfile 
 export async function getProfileHandler(request: FastifyRequest, reply: FastifyReply) {
   try {
     const { id } = request.params as { id: string }; 
-    const profile = getUserProfile(id) 
+    const profile = await getUserProfile(id) 
 
     return reply.status(200).send({ message: profile });
   } catch (error) {
