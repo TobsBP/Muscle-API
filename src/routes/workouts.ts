@@ -21,7 +21,7 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
     }
   }, getWorkoutsHandler);
   
-  server.get('/workout', {
+  server.get('/workout/:id', {
     preHandler: authenticateBearer,
     schema: {
       description: 'Get a single workout by id',

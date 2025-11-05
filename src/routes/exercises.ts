@@ -4,7 +4,7 @@ import z from "zod"
 import { getExerciseHandler, getExercisesHandler, updateExerciseHandler, deleteExerciseHandler } from '../controllers/exercises';
 
 export async function exerciseRoutes(server: FastifyTypedInstance) {
-  server.get('/exercise', {
+  server.get('/exercise/:id', {
     preHandler: authenticateBearer,
     schema: {
       querystring: z.object({
