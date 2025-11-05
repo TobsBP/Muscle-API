@@ -1,12 +1,12 @@
-import { authenticateApiKey } from '../middleware/auth';
+import { authenticateBearer } from '../middleware/auth';
 import type { FastifyTypedInstance } from '../types'
 import z from "zod"
 import { getExerciseHandler, getExercisesHandler, updateExerciseHandler, deleteExerciseHandler } from '../controllers/exercises';
 
 export async function exerciseRoutes(server: FastifyTypedInstance) {
   server.get('/exercise', {
+    preHandler: authenticateBearer,
     schema: {
-      preHandler: authenticateApiKey,
       querystring: z.object({
         id: z.number(),
       }),
@@ -25,8 +25,8 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
   }, getExerciseHandler);
   
   server.get('/exercises', {
+    preHandler: authenticateBearer,
     schema: {
-      preHandler: authenticateApiKey,
       description: 'Get all exercises in the db',
       summary: 'Get all exercises',
       tags: ['exercise'],
@@ -42,8 +42,8 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
   }, getExercisesHandler);
 
   server.put('/exercise/:id', {
+    preHandler: authenticateBearer,
     schema: {
-      preHandler: authenticateApiKey,
       description: 'Update an exercise by id',
       summary: 'Update an exercise by id',
       tags: ['exercise'],
@@ -62,8 +62,8 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
   }, updateExerciseHandler);
 
   server.delete('/exercise/:id', {
+    preHandler: authenticateBearer,
     schema: {
-      preHandler: authenticateApiKey,
       description: 'Delete an exercise by id',
       summary: 'Delete an exercise by id',
       tags: ['exercise'],

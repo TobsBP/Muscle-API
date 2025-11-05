@@ -1,9 +1,10 @@
 import { getExercises, getExercise, updateExercise, deleteExercise } from '../repositories/exercises';
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-export async function getExerciseHandler(request: FastifyRequest<{ Querystring: { id: number } }>, reply: FastifyReply) {
+export async function getExerciseHandler(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const exercise = await getExercise(request.query.id); 
+      const { id } = request.query as { id: number }
+      const exercise = await getExercise(id); 
 
       return reply.status(200).send({ message: exercise });
     } catch (error) {
@@ -27,9 +28,11 @@ export async function getExercisesHandler(request: FastifyRequest, reply: Fastif
     }
 }
 
-export async function updateExerciseHandler(request: FastifyRequest<{ Params: { id: number }, Body: any }>, reply: FastifyReply) {
+export async function updateExerciseHandler(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const exercise = await updateExercise(request.params.id, request.body); 
+      const { id } = request.query as { id: number };
+
+      const exercise = await updateExercise(id, request.body); 
 
       return reply.status(200).send({ message: exercise });
     } catch (error) {
@@ -40,9 +43,11 @@ export async function updateExerciseHandler(request: FastifyRequest<{ Params: { 
     }
 }
 
-export async function deleteExerciseHandler(request: FastifyRequest<{ Params: { id: number } }>, reply: FastifyReply) {
+export async function deleteExerciseHandler(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const exercise = await deleteExercise(request.params.id); 
+      const { id } = request.query as { id: number };
+
+      const exercise = await deleteExercise(id); 
 
       return reply.status(200).send({ message: exercise });
     } catch (error) {

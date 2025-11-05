@@ -13,9 +13,11 @@ export async function getWorkoutsHandler(request: FastifyRequest, reply: Fastify
     }
 }
 
-export async function getWorkoutHandler(request: FastifyRequest<{ Querystring: { id: number } }>, reply: FastifyReply) {
+export async function getWorkoutHandler(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const response = await getWorkout(request.query.id);
+      const { id } = request.params as { id: number };
+
+      const response = await getWorkout(id);
 
       return reply.status(200).send({ message: response });
     } catch (error) {

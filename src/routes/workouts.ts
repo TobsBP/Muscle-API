@@ -1,11 +1,11 @@
-import { authenticateApiKey } from '../middleware/auth';
+import { getWorkoutHandler, getWorkoutsHandler, updateWorkoutHandler, deleteWorkoutHandler } from '../controllers/workouts';
+import { authenticateBearer } from '../middleware/auth';
 import type { FastifyTypedInstance } from '../types'
 import z from "zod"
-import { getWorkoutHandler, getWorkoutsHandler, updateWorkoutHandler, deleteWorkoutHandler } from '../controllers/workouts';
 
 export async function workoutRoutes(server: FastifyTypedInstance) {
   server.get('/workouts', {
-    preHandler: authenticateApiKey,
+    preHandler: authenticateBearer,
     schema: {
       description: 'Get all workouts registred in the db',
       summary: 'Get all workouts',
@@ -22,8 +22,8 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
   }, getWorkoutsHandler);
   
   server.get('/workout', {
+    preHandler: authenticateBearer,
     schema: {
-      preHandler: authenticateApiKey,
       description: 'Get a single workout by id',
       summary: 'Get a single workout by id',
       tags: ['workout'],
@@ -42,8 +42,8 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
   }, getWorkoutHandler);
 
   server.put('/workout/:id', {
+    preHandler: authenticateBearer,
     schema: {
-      preHandler: authenticateApiKey,
       description: 'Update a workout by id',
       summary: 'Update a workout by id',
       tags: ['workout'],
@@ -62,8 +62,8 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
   }, updateWorkoutHandler);
 
   server.delete('/workout/:id', {
+    preHandler: authenticateBearer,
     schema: {
-      preHandler: authenticateApiKey,
       description: 'Delete a workout by id',
       summary: 'Delete a workout by id',
       tags: ['workout'],

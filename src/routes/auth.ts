@@ -3,12 +3,12 @@ import { z } from "zod";
 import { userSchema } from "../types/userSchema";
 import { profileSchema } from "../types/profileSchema";
 import { supabase } from "../config/supabase";
-import { authenticateApiKey } from "../middleware/auth";
+import { authenticateBearer } from "../middleware/auth";
 import { registerUserHandler, loginHandler, createProfileHandler } from "../controllers/auth";
 
 export async function authRoutes(app: FastifyInstance) {
   app.post("/registerUser", {
-    preHandler: authenticateApiKey,
+    preHandler: authenticateBearer,
     schema: {
       body: userSchema,
       description: 'Register a new user',
@@ -26,8 +26,8 @@ export async function authRoutes(app: FastifyInstance) {
   }, registerUserHandler);
 
   app.post("/login", {
+    preHandler: authenticateBearer,
     schema: {
-      preHandler: authenticateApiKey,
       body: z.object({
         email: z.email(),
         password: z.string(),
@@ -46,13 +46,7 @@ export async function authRoutes(app: FastifyInstance) {
   }, loginHandler);
 
   app.post("/createProfile", {
-    preHandler: [async (request, reply) => {
-      const { data, error } = await supabase.auth.getUser(request.headers.authorization?.replace("Bearer ", ""));
-      if (error || !data.user) {
-        return reply.status(401).send({ message: "Unauthorized" });
-      }
-      request.user = data.user;
-    }],
+    preHandler: authenticateBearer,
     schema: {
       body: profileSchema,
       description: 'Create a user profile',
