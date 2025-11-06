@@ -24,22 +24,17 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
   server.get('/workout/:id', {
     preHandler: authenticateBearer,
     schema: {
-      description: 'Get a single workout by id',
-      summary: 'Get a single workout by id',
-      tags: ['workout'],
-      querystring: z.object({
-        id: z.number(),
+      params: z.object({
+        id: z.string(),
       }),
-      response:{
-        200: z.object({
-          message: z.unknown()
-        }),
-        404: z.object({
-          message: z.string()
-        }),
-      }
-    }
-  }, getWorkoutHandler);
+      description: 'Get user daily workout with exercises',
+      tags: ['workout'],
+      response: {
+        200: z.object({ message: z.unknown() }),
+        500: z.object({ message: z.unknown() }),
+      },
+    },
+  }, getWorkoutsHandler)
 
   server.put('/workout/:id', {
     preHandler: authenticateBearer,

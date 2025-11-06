@@ -12,19 +12,29 @@ export const getWorkout = async (id: number) => {
   .single()
 }
 
-export const getWorkouts = async () => {
+export const getWorkouts = async (id: string) => {
   return await supabase
-    .from("daily_workout_exercises")
+    .from("daily_workouts")
     .select(`
       id,
-      position,
-      daily_workout_id,
-      exercises (
+      workout_date,
+      daily_workout_exercises(
         id,
-        name,
-        description
+        exercise_id,
+        position,
+        sets,
+        reps,
+        exercises(
+          id,
+          name,
+          description,
+          difficulty,
+          duration_minutes
+        )
       )
     `)
+  .eq('user_id', id)
+  .single()
 }
 
 export const updateWorkout = async (id: number, workout: any) => {

@@ -26,7 +26,7 @@ export async function authRoutes(app: FastifyInstance) {
   }, registerUserHandler);
 
   app.post("/login", {
-    preHandler: authenticateBearer,
+    // preHandler: authenticateBearer,
     schema: {
       body: z.object({
         email: z.email(),
