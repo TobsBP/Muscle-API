@@ -34,7 +34,7 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
         500: z.object({ message: z.unknown() }),
       },
     },
-  }, getWorkoutsHandler)
+  }, getWorkoutHandler)
 
   server.put('/workout/:id', {
     preHandler: authenticateBearer,
