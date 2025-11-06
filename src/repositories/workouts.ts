@@ -16,24 +16,27 @@ export const getWorkout = async (id: string) => {
     .select(`
       id,
       workout_date,
-      daily_workout_exercises(
+      daily_workout_exercises:daily_workout_exercises(
         id,
         exercise_id,
         position,
         sets,
         reps,
-        exercises(
+        exercises:exercises(
           id,
           name,
           description,
           difficulty,
-          duration_minutes
+          duration_minutes,
+          gif_url
         )
       )
     `)
-  .eq('user_id', id)
-  .single()
-}
+    .eq('user_id', id)
+    .order('position', { foreignTable: 'daily_workout_exercises', ascending: true })
+    .maybeSingle();
+};
+
 
 export const updateWorkout = async (id: number, workout: any) => {
     return await supabase
