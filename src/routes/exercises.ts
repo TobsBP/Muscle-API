@@ -7,8 +7,8 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
   server.get('/exercise/:id', {
     preHandler: authenticateBearer,
     schema: {
-      querystring: z.object({
-        id: z.number(),
+      params: z.object({
+        id: z.coerce.number(),
       }),
       description: 'Get a single exercise by id',
       summary: 'Get a single exercise by id',
@@ -48,7 +48,7 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
       summary: 'Update an exercise by id',
       tags: ['exercise'],
       params: z.object({
-        id: z.number(),
+        id: z.coerce.number(),
       }),
       response: {
         200: z.object({
@@ -68,7 +68,7 @@ export async function exerciseRoutes(server: FastifyTypedInstance) {
       summary: 'Delete an exercise by id',
       tags: ['exercise'],
       params: z.object({
-        id: z.number(),
+        id: z.coerce.number(),
       }),
       response: {
         200: z.object({

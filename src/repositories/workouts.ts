@@ -41,7 +41,6 @@ export const updateStatus = async (id: number) => {
     .eq("id", id);
 };
 
-
 export const updateWorkout = async (id: number, workout: any) => {
     return await supabase
     .from('daily_workouts')

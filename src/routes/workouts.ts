@@ -43,7 +43,7 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
       summary: 'Update a workout by id',
       tags: ['workout'],
       params: z.object({
-        id: z.number(),
+        id: z.coerce.number(),
       }),
       response:{
         200: z.object({
@@ -63,7 +63,7 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
       summary: 'Update a workout by id',
       tags: ['workout'],
       params: z.object({
-        id: z.number(),
+        id: z.coerce.number(),
       }),
       response:{
         200: z.object({
@@ -83,7 +83,7 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
       summary: 'Delete a workout by id',
       tags: ['workout'],
       params: z.object({
-        id: z.number(),
+        id: z.coerce.number(),
       }),
       response:{
         200: z.object({
