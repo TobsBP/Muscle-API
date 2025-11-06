@@ -21,7 +21,6 @@ export const getWorkout = async (id: string) => {
         position,
         sets,
         reps,
-        finished,
         exercises (
           id,
           name,
@@ -29,7 +28,7 @@ export const getWorkout = async (id: string) => {
           difficulty,
           duration_minutes,
           gif_url,
-        )
+        ) 
       )
     `)
     .eq('user_id', id)
@@ -37,7 +36,7 @@ export const getWorkout = async (id: string) => {
 
 export const updateStatus = async (id: number) => {
   return await supabase
-    .from("daily_workout_exercises")
+    .from("daily_workouts")
     .update({ finished: true })
     .eq("id", id);
 };
