@@ -34,6 +34,13 @@ export const getWorkout = async (id: string) => {
     .eq('user_id', id)
 };
 
+export const updateStatus = async (id: number) => {
+  return await supabase
+    .from("daily_workout_exercises")
+    .update({ finished: true })
+    .eq("id", id);
+};
+
 
 export const updateWorkout = async (id: number, workout: any) => {
     return await supabase

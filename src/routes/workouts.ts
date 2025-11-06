@@ -1,4 +1,4 @@
-import { getWorkoutHandler, getWorkoutsHandler, updateWorkoutHandler, deleteWorkoutHandler } from '../controllers/workouts';
+import { getWorkoutHandler, getWorkoutsHandler, updateWorkoutHandler, deleteWorkoutHandler, updateWorkoutStatusHandler } from '../controllers/workouts';
 import { authenticateBearer } from '../middleware/auth';
 import type { FastifyTypedInstance } from '../types'
 import z from "zod"
@@ -35,6 +35,26 @@ export async function workoutRoutes(server: FastifyTypedInstance) {
       },
     },
   }, getWorkoutHandler)
+
+  server.put('/workoutUpdateStatus/:id', {
+    preHandler: authenticateBearer,
+    schema: {
+      description: 'Update a workout by id',
+      summary: 'Update a workout by id',
+      tags: ['workout'],
+      params: z.object({
+        id: z.number(),
+      }),
+      response:{
+        200: z.object({
+          message: z.unknown()
+        }),
+        404: z.object({
+          message: z.string()
+        }),
+      }
+    }
+  }, updateWorkoutStatusHandler);
 
   server.put('/workout/:id', {
     preHandler: authenticateBearer,
