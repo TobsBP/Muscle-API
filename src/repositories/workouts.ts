@@ -1,6 +1,6 @@
 import { supabase } from "../config/supabase";
 
-export const getWorkout = async (id: number) => {
+export const getWorkouts = async () => {
   return await supabase
   .from("daily_workouts")
   .select(`
@@ -8,11 +8,9 @@ export const getWorkout = async (id: number) => {
     workout_date,
     workout_date_exercises,
     *`)
-  .eq('id', id)
-  .single()
 }
 
-export const getWorkouts = async (id: string) => {
+export const getWorkout = async (id: string) => {
   return await supabase
     .from("daily_workouts")
     .select(`

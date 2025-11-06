@@ -3,9 +3,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 
 export async function getWorkoutsHandler(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const { id } = request.params as { id: string };
-
-      const response = await getWorkouts(id);
+      const response = await getWorkouts();
 
       return reply.status(200).send({ message: response });
     } catch (error) {
@@ -17,7 +15,7 @@ export async function getWorkoutsHandler(request: FastifyRequest, reply: Fastify
 
 export async function getWorkoutHandler(request: FastifyRequest, reply: FastifyReply) {
     try {
-      const { id } = request.params as { id: number };
+      const { id } = request.params as { id: string };
 
       const response = await getWorkout(id);
 
