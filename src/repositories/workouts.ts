@@ -6,7 +6,6 @@ export const getWorkouts = async () => {
   .select(`
     id,
     workout_date,
-    workout_date_exercises,
     *`)
 }
 
@@ -22,6 +21,7 @@ export const getWorkout = async (id: string) => {
         position,
         sets,
         reps,
+        finished,
         exercises (
           id,
           name,
