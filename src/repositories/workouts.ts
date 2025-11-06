@@ -27,7 +27,8 @@ export const getWorkout = async (id: string) => {
           name,
           description,
           difficulty,
-          duration_minutes
+          duration_minutes,
+          gif_url,
         )
       )
     `)
