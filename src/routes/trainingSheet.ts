@@ -35,8 +35,8 @@ export async function trainingSheetRoutes(server: FastifyTypedInstance) {
         exercises: z.array(z.object({
           name: z.string(),
           sets: z.number(),
-          reps: z.string(),
-          wheight: z.number(),
+          reps: z.number(),
+          weight: z.number(),
         })),
       }),
       response: {
