@@ -1,10 +1,10 @@
-import { getTrainingSheet, deleteTrainingSheet, createTrainingSheet } from '../repositories/trainingSheet';
+import { getTrainingSheets, deleteTrainingSheet, createTrainingSheet } from '../repositories/trainingSheet';
 import { FastifyRequest, FastifyReply } from 'fastify';
 
 export async function getTrainingSheetHandle(request: FastifyRequest, reply: FastifyReply) {
   try {
     const { id } = request.params as { id: string }; 
-    const profile = await getTrainingSheet(id) 
+    const profile = await getTrainingSheets(id) 
 
     return reply.status(200).send({ message: profile });
   } catch (error) {
@@ -18,7 +18,7 @@ export async function getTrainingSheetHandle(request: FastifyRequest, reply: Fas
 export async function createTrainingSheetHandle(request: FastifyRequest, reply: FastifyReply) {
   try {
     const { user_id, title, exercises } = request.body as { user_id: string; title: string; exercises: any[] };
-    const newSheet = await createTrainingSheet({ user_id, title, exercises });
+    const newSheet = await createTrainingSheet({ userId: user_id, title, exercises });
 
     return reply.status(201).send({ message: newSheet });
   } catch (error) {
@@ -29,8 +29,9 @@ export async function createTrainingSheetHandle(request: FastifyRequest, reply: 
 
 export async function deleteTrainingSheetHandle(request: FastifyRequest, reply: FastifyReply) {
   try {
-    const { id } = request.params as { id: string }; 
-    const profiles = await deleteTrainingSheet(id); 
+    const { id: sheetId } = request.params as { id: string };
+    const { id: userId } = request.user as { id: string };
+    const profiles = await deleteTrainingSheet(sheetId, userId); 
 
     return reply.status(200).send({ message: profiles });
   } catch (error) {
