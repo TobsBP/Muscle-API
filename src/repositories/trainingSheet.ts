@@ -2,19 +2,16 @@ import { supabase } from "../config/supabase";
 
 export const getTrainingSheet = async (id: string) => {
   return await supabase
-    .from('user_profiles')
+    .from("training_sheets")
     .select(`
       id,
-      training_sheets (
+      title,
+      training_sheet_exercises (
         id,
-        title,
-        training_sheet_exercises (
-          id,
-          name,
-          sets,
-          reps,
-          wheight
-        ) 
+        name,
+        sets,
+        reps,
+        weight
       )
     `)
   .eq('user_id', id)
