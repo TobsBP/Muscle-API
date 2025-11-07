@@ -1,4 +1,4 @@
-import { getTrainingSheet, deleteTrainingSheet } from '../repositories/trainingSheet';
+import { getTrainingSheet, deleteTrainingSheet, createTrainingSheet } from '../repositories/trainingSheet';
 import { FastifyRequest, FastifyReply } from 'fastify';
 
 export async function getTrainingSheetHandle(request: FastifyRequest, reply: FastifyReply) {
@@ -15,6 +15,18 @@ export async function getTrainingSheetHandle(request: FastifyRequest, reply: Fas
   }
 }
 
+export async function createTrainingSheetHandle(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const { user_id, title, exercises } = request.body as { user_id: string; title: string; exercises: any[] };
+    const newSheet = await createTrainingSheet({ user_id, title, exercises });
+
+    return reply.status(201).send({ message: newSheet });
+  } catch (error) {
+    console.error("error:", error);
+    return reply.status(500).send({ message: "Failed to create training sheet" });
+  }
+}
+
 export async function deleteTrainingSheetHandle(request: FastifyRequest, reply: FastifyReply) {
   try {
     const { id } = request.params as { id: string }; 
@@ -28,3 +40,4 @@ export async function deleteTrainingSheetHandle(request: FastifyRequest, reply: 
     return reply.status(500).send({ message: "Failed" });
   }
 }
+

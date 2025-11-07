@@ -1,9 +1,9 @@
-import { getTrainingSheetHandle, deleteTrainingSheetHandle } from '../controllers/trainingSheet';
+import { getTrainingSheetHandle, deleteTrainingSheetHandle, createTrainingSheetHandle } from '../controllers/trainingSheet';
 import { authenticateBearer } from '../middleware/auth'
 import type { FastifyTypedInstance } from '../types'
 import z from 'zod'
 
-export async function profileRoutes(server: FastifyTypedInstance) {
+export async function trainingSheetRoutes(server: FastifyTypedInstance) {
   server.get('/trainingSheet/:id', {
   preHandler: authenticateBearer,
   schema: {
@@ -20,16 +20,43 @@ export async function profileRoutes(server: FastifyTypedInstance) {
         message: z.literal('Error'),
       }),
     },
-    tags: ['profile'],
+    tags: ['training-sheet'],
     },
   }, getTrainingSheetHandle);
+
+  server.post('/trainingSheet', {
+    preHandler: authenticateBearer,
+    schema: {
+      description: 'Create a new training sheet',
+      summary: 'Create a new training sheet',
+      body: z.object({
+        user_id: z.uuid(),
+        title: z.string(),
+        exercises: z.array(z.object({
+          name: z.string(),
+          sets: z.number(),
+          reps: z.string(),
+          wheight: z.number(),
+        })),
+      }),
+      response: {
+        201: z.object({
+          message: z.unknown(),
+        }),
+        500: z.object({
+          message: z.string(),
+        }),
+      },
+      tags: ['training-sheet'],
+    },
+  }, createTrainingSheetHandle);
 
   server.delete('/trainingSheet/:id', {
     preHandler: authenticateBearer,
     schema: {
       description: 'Delete a user training Sheet by id',
       summary: 'Delete a user training Sheet by id',
-      tags: ['profile'],
+      tags: ['training-sheet'],
       params: z.object({
         id: z.string(),
       }),
