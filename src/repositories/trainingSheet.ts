@@ -1,6 +1,6 @@
 import { supabase } from "../config/supabase";
 
-export const getTrainingSheet = async (id: string) => {
+export const getTrainingSheets = async (userId: string) => {
   return await supabase
     .from("training_sheets")
     .select(`
@@ -14,32 +14,36 @@ export const getTrainingSheet = async (id: string) => {
         weight
       )
     `)
-  .eq('user_id', id)
-}
+    .eq("user_id", userId);
+};
 
-export const createTrainingSheet = async (sheetData: { user_id: string; title: string; exercises: any[] }) => {
+export const createTrainingSheet = async (sheetData: { userId: string; title: string; exercises: any[] }) => {
   const { data, error } = await supabase
-    .from('training_sheets')
-    .insert({ user_id: sheetData.user_id, title: sheetData.title })
-    .select('id')
+    .from("training_sheets")
+    .insert({ user_id: sheetData.userId, title: sheetData.title })
+    .select("id")
     .single();
 
   if (error || !data) {
-    throw new Error('Failed to create training sheet');
+    throw new Error("Failed to create training sheet");
   }
 
   const sheetId = data.id;
-  const exercisesToInsert = sheetData.exercises.map(ex => ({ ...ex, training_sheet_id: sheetId }));
+  const exercisesToInsert = sheetData.exercises.map(ex => ({
+    ...ex,
+    training_sheet_id: sheetId,
+  }));
 
   return await supabase
-    .from('training_sheet_exercises')
+    .from("training_sheet_exercises")
     .insert(exercisesToInsert)
     .select();
-}
+};
 
-export const deleteTrainingSheet = async (id: string) => {
+export const deleteTrainingSheet = async (sheetId: string, userId: string) => {
   return await supabase
-    .from('training_sheets')
+    .from("training_sheets")
     .delete()
-    .eq('id', id)
-}
+    .eq("id", sheetId)
+    .eq("user_id", userId);
+};
