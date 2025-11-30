@@ -1,9 +1,52 @@
-import { deleteUserProfileHandler, getProfileHandler, updateProfileHandler, getProfilesHandler } from '../controllers/profile';
+import { deleteUserProfileHandler, getProfileHandler, updateProfileHandler, getProfilesHandler, getFirstAccessHandler, updateFirstAccessHandler } from '../controllers/profile';
 import { authenticateBearer } from '../middleware/auth'
 import type { FastifyTypedInstance } from '../types'
 import z from 'zod'
 
 export async function profileRoutes(server: FastifyTypedInstance) {
+  server.get('/userProfile/:id/first-access', {
+    preHandler: authenticateBearer,
+    schema: {
+      description: 'Get the user first access status based on the id',
+      summary: 'Get the user first access status based on the id',
+      params: z.object({
+        id: z.string(),
+      }),
+      response: {
+        200: z.object({
+          message: z.unknown(),
+        }),
+        400: z.object({
+          message: z.literal('Error'),
+        }),
+      },
+      tags: ['profile'],
+    },
+  }, getFirstAccessHandler);
+
+  server.put('/userProfile/:id/first-access', {
+    preHandler: authenticateBearer,
+    schema: {
+      description: 'Update the user first access status based on the id',
+      summary: 'Update the user first access status based on the id',
+      params: z.object({
+        id: z.string(),
+      }),
+      body: z.object({
+        first_access: z.boolean(),
+      }),
+      response: {
+        200: z.object({
+          message: z.unknown(),
+        }),
+        400: z.object({
+          message: z.literal('Error'),
+        }),
+      },
+      tags: ['profile'],
+    },
+  }, updateFirstAccessHandler);
+
   server.get('/userProfile/:id', {
   preHandler: authenticateBearer,
   schema: {

@@ -14,6 +14,21 @@ export const getUserProfile = async(id: string) => {
     .single()
 }
 
+export const getUserFirstAccess = async(id: string) => {
+  return await supabase
+    .from('user_profiles')
+    .select('first_access')
+    .eq('id', id)
+    .single()
+}
+
+export const updateUserFirstAccess = async (id: string, first_access: boolean) => {
+  return await supabase
+    .from('user_profiles')
+    .update({ first_access })
+    .eq('id', id)
+}
+
 export const updateUserProfile = async (id: string, profile: any) => {
     return await supabase
     .from('user_profiles')

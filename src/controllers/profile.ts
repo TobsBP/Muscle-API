@@ -1,5 +1,33 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { getUserProfile, getUsersProfiles, updateUserProfile, deleteUserProfile } from '../repositories/profile';
+import { getUserProfile, getUsersProfiles, updateUserProfile, deleteUserProfile, getUserFirstAccess, updateUserFirstAccess } from '../repositories/profile';
+
+export async function getFirstAccessHandler(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const { id } = request.params as { id: string };
+    const firstAccess = await getUserFirstAccess(id)
+
+    return reply.status(200).send({ message: firstAccess });
+  } catch (error) {
+
+    console.error("error:", error);
+
+    return reply.status(500).send({ message: "Failed" });
+  }
+}
+
+export async function updateFirstAccessHandler(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    const { id } = request.params as { id: string };
+    const { first_access } = request.body as { first_access: boolean };
+
+    const response = await updateUserFirstAccess(id, first_access);
+
+    return reply.status(200).send({ message: response });
+  } catch (error) {
+    console.error("error:", error);
+    return reply.status(500).send({ message: "Failed" });
+  }
+}
 
 export async function getProfileHandler(request: FastifyRequest, reply: FastifyReply) {
   try {
